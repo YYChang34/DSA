@@ -1,40 +1,41 @@
-#include <cstdio>
-
+#include <iostream>
+using namespace std;
 
 int main(void) {
 	int x, y;
-	scanf("%d", &x);
-	scanf("%d", &y);
+	cout << "請輸入x和y並以空格隔開" << endl;
+	cin >> x >> y;
 
-	char** c = new char*[x * sizeof(char*)];
+	char** c = new char*[x];
 
 	int i, j;
 	for(i = 0; i < x; i++) {
-		c[i] = new char[(y + 1) * sizeof(char)];
+		c[i] = new char[y + 1];
+	}
+
+
+	for(i = 0; i < x; i++) {
+		cin >> c[i];
 	}
 
 	for(i = 0; i < x; i++) {
-		scanf("%s", c[i]);
-	}
-
-	for(i = x - 2; i >= 0; i--) {
-		for(j = 0; j <= i; j++) {
+		for(j = 0; j < x - i - 1; j++) {
 			if(**(c + j) < **(c + j + 1)) {
-				char *temp = *(c + j + 1);
-				*(c + j + 1) = *(c + j);
-				*(c + j) = temp;
+				char* temp = *(c + j);
+				*(c + j) = *(c + j + 1);
+				*(c + j + 1) = temp;
 			}
 		}
 	}
 
 	for(i = 0; i < x; i++) {
-		printf("%s\n", c[i]);
+		cout << c[i] << endl;
 	}
 
 	for(i = 0; i < x; i++) {
-		delete (c[i]);
+		delete [] c[i];
 	}
+	delete [] c;
 
-	delete (c);
 	return 0;
 }

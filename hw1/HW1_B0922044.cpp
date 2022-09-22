@@ -1,48 +1,46 @@
-#include <cstdio>
+#include <iostream>
 #include <cstring>
-#include <malloc.h>
-
-#define MAX_SIZE 100
+using namespace std;
 
 int main(void) {
-     int x;
-     scanf("%d\n", &x);
-     char** c = (char**)malloc(x * sizeof(char*));
+	int x;
+	cin >> x;
 
-     int i, j, max_len_of_name = -1;
-     for(i = 0; i < x; i++) {
-          char temp[MAX_SIZE] = {};
-          fgets(temp, MAX_SIZE-1, stdin);
-          c[i] = (char*) malloc((strlen(temp)+1) * sizeof(char));
-          strcpy(c[i], temp);
-     }
+	char** str = (char**)malloc(x * sizeof(char*));
 
-     int len_of_first_word[x] = {0};
-     int max_len_of_first_word = -1;
-     for(i = 0; i < x; i++) {
-          for (j = 0; ; j++) {
-               if (c[i][j] == ' ') {
-                    len_of_first_word[i] = j;
-                    if (len_of_first_word[i] > max_len_of_first_word) {
-                         max_len_of_first_word = len_of_first_word[i];
-                    }
-                    break;      
-               }
-          }
-     }
+	int i, j, max = -1, len[x];
+	for(i = 0; i < x; i++) {
+		char Firstname[100] = {}, Lastname_1[100] = {}, Lastname_2[100] = {}, c;
+		cin >> Firstname;
+		cin >> Lastname_1;
+		if((c = cin.get()) == ' ') {
+			cin >> Lastname_2;
+		}
 
-     for(i = 0; i < x; i++) {
-          int num_of_space = max_len_of_first_word - len_of_first_word[i];
-          for (j = 0; j < num_of_space; j++) {
-               printf(" ");
-          }
-          printf("%s", c[i]);
-     }
+		len[i] = strlen(Firstname);
+		if(len[i] > max) {
+			max = len[i];
+		}
 
-     for(i = 0; i < x; i++) {
-          free(c[i]);
-     }
+		str[i] = (char*)malloc((strlen(Firstname) + strlen(Lastname_1) + strlen(Lastname_2) + 1) * sizeof(char));
+		strcpy(str[i], Firstname);
+		strcat(str[i], " ");
+		strcat(str[i], Lastname_1);
+		if(strlen(Lastname_2) != 0) {
+			strcat(str[i], " ");
+			strcat(str[i], Lastname_2);
+		}
+	}
 
-     free(c);
-     return 0;
+	for(i = 0; i < x; i++) {
+		for(j = 0; j < max - len[i]; j++){
+			cout << " ";
+		}
+		cout << str[i] << endl;
+		free(str[i]);
+	}
+
+	free(str);
+
+	return 0;
 }
